@@ -4,6 +4,8 @@ var MAX_RUN_SPEED = 150
 var MAX_JUMP_SPEED = 400
 var GRAVITY = 200
 
+var hp = 100
+
 var run_speed = 0
 var jump_speed = 0
 
@@ -14,6 +16,8 @@ func cursor_pos():
 	return position + $cursor.cast_to
 
 func _physics_process(delta):
+	$hp_bar.value = hp
+	
 	var right = Input.is_action_pressed('right')
 	var left = Input.is_action_pressed('left')
 	var jumping = Input.is_action_pressed('jump')
