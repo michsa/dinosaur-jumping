@@ -23,6 +23,11 @@ func _physics_process(delta):
 	var jumping = Input.is_action_pressed('jump')
 	var jump = Input.is_action_just_pressed('jump')
 	
+	var attack = Input.is_action_just_pressed('attack')
+	
+	if attack:
+		$weapon.attack()
+	
 	if is_on_floor():
 		jumps = 0
 		jump_speed = 0
@@ -49,3 +54,4 @@ func _physics_process(delta):
 	velocity.x = run_speed
 	
 	velocity = move_and_slide(velocity, Vector2(0, -1))
+
