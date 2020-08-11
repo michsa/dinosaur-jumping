@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 var MAX_RUN_SPEED = 50
 var GRAVITY = 200
+var MAX_JUMPS = 1
 
 var run_speed = 0
 var jump_speed = 0
@@ -25,7 +26,7 @@ func _physics_process(delta):
 		jump_speed = 0
 		velocity.y = 0
 
-	if jump && jumps < 2:
+	if jump && jumps < MAX_JUMPS:
 		jumps += 1
 		jump_speed = 550
 	
@@ -33,8 +34,6 @@ func _physics_process(delta):
 		jump_speed = lerp(jump_speed, 0, delta * (2 + jumps))
 	else:
 		jump_speed = lerp(jump_speed, 0, delta * (6 + jumps))
-		
-	velocity.y = GRAVITY - jump_speed
 	
 	if right:
 		run_speed = lerp(run_speed, MAX_RUN_SPEED, delta * 6)
@@ -43,6 +42,6 @@ func _physics_process(delta):
 	else:
 		run_speed = lerp(run_speed, 0, delta * 8)
 	
+	velocity.y = GRAVITY - jump_speed
 	velocity.x = run_speed
-	
 	velocity = move_and_slide(velocity, Vector2(0, -1))

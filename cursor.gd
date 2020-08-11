@@ -27,6 +27,10 @@ func _process(delta):
 		time_since_moved = 0
 		cast_to += offset
 		cast_to = cast_to.clamped(radius)
+		if cast_to.x < 0:
+			$'../body'.scale.x = -1
+		if cast_to.x > 0:
+			$'../body'.scale.x = 1
 	update()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
