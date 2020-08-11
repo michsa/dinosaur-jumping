@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-var MAX_RUN_SPEED = 150
+var MAX_RUN_SPEED = 120
 var MAX_JUMP_SPEED = 400
 var GRAVITY = 200
 var MAX_JUMPS = 2
@@ -35,7 +35,7 @@ func _physics_process(delta):
 		velocity.y = 0
 		target_run_speed = MAX_RUN_SPEED
 	else:
-		target_run_speed = 100
+		target_run_speed = MAX_RUN_SPEED * 0.8
 
 	if jump && jumps < MAX_JUMPS:
 		jumps += 1

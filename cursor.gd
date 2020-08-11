@@ -17,7 +17,17 @@ func _ready():
 	enabled = true
 	pass # Replace with function body.
 
-func _process(delta):
+# maps cursor directly to the joypad axis
+func process_quick_cursor():
+	cast_to = Vector2(Input.get_joy_axis(0, 2), Input.get_joy_axis(0, 3)) * radius
+	if cast_to.x < -10:
+		$'../body'.scale.x = -1
+	if cast_to.x > 10:
+		$'../body'.scale.x = 1
+
+# uses joypad input to move cursor.
+# better control, but feels less juicy
+func process_sticky_cursor(delta):
 	var offset = Vector2(Input.get_joy_axis(0, 2), Input.get_joy_axis(0, 3)) * 6
 	if offset.length() < 1:
 		time_since_moved += delta
@@ -31,6 +41,9 @@ func _process(delta):
 			$'../body'.scale.x = -1
 		if cast_to.x > 0:
 			$'../body'.scale.x = 1
+
+func _physics_process(delta):
+	process_quick_cursor()
 	update()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
