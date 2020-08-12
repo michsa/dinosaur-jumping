@@ -6,7 +6,6 @@ extends RayCast2D
 # var b = "text"
 
 var radius = 48
-
 var time_since_moved = 0
 
 func visible():
@@ -20,10 +19,8 @@ func _ready():
 # maps cursor directly to the joypad axis
 func process_quick_cursor():
 	cast_to = Vector2(Input.get_joy_axis(0, 2), Input.get_joy_axis(0, 3)) * radius
-	if cast_to.x < -10:
-		$'../body'.scale.x = -1
-	if cast_to.x > 10:
-		$'../body'.scale.x = 1
+	return visible()
+	
 
 # uses joypad input to move cursor.
 # better control, but feels less juicy
@@ -37,13 +34,22 @@ func process_sticky_cursor(delta):
 		time_since_moved = 0
 		cast_to += offset
 		cast_to = cast_to.clamped(radius)
-		if cast_to.x < 0:
-			$'../body'.scale.x = -1
-		if cast_to.x > 0:
-			$'../body'.scale.x = 1
+		return true
+
+# fallback
+func process_mouse_cursor():
+	var mouse_pos = get_global_mouse_position()
+	var pos = $'..'.position
+	if mouse_pos.distance_squared_to(pos) < radius * radius:
+		cast_to = mouse_pos - pos
+		return true
 
 func _physics_process(delta):
-	process_quick_cursor()
+	process_sticky_cursor(delta) || process_mouse_cursor()
+	if cast_to.x < -10:
+		$'../body'.scale.x = -1
+	if cast_to.x > 10:
+		$'../body'.scale.x = 1
 	update()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
