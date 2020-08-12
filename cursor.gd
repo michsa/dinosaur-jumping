@@ -1,12 +1,9 @@
 extends RayCast2D
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var STICK_DURATION = 0.8
 
 var radius = 48
-var time_since_moved = 0
+var time_to_reset = STICK_DURATION
 
 func visible():
 	return cast_to.length() > 10
@@ -27,11 +24,11 @@ func process_quick_cursor():
 func process_sticky_cursor(delta):
 	var offset = Vector2(Input.get_joy_axis(0, 2), Input.get_joy_axis(0, 3)) * 6
 	if offset.length() < 1:
-		time_since_moved += delta
-		if time_since_moved > 0.8:
+		time_to_reset -= delta
+		if time_to_reset <= 0:
 			cast_to = Vector2(0, 0)
 	else:
-		time_since_moved = 0
+		time_to_reset = STICK_DURATION
 		cast_to += offset
 		cast_to = cast_to.clamped(radius)
 		return true
@@ -45,7 +42,7 @@ func process_mouse_cursor():
 		return true
 
 func _physics_process(delta):
-	process_sticky_cursor(delta) || process_mouse_cursor()
+	process_quick_cursor() || process_mouse_cursor()
 	if cast_to.x < -10:
 		$'../body'.scale.x = -1
 	if cast_to.x > 10:
@@ -57,4 +54,4 @@ func _physics_process(delta):
 #	pass
 
 func _draw():
-	if visible(): draw_circle(cast_to, 4, Color(0.8, 0.8, 0.6, 0.7))
+	if visible(): draw_circle(cast_to, 4, Color(0.8, 0.8, 0.6, time_to_reset))
