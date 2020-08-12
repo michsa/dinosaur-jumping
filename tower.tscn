@@ -119,7 +119,7 @@ script = ExtResource( 4 )
 position = Vector2( 153.825, 102.015 )
 
 [node name="enemy" parent="." instance=ExtResource( 6 )]
-position = Vector2( 40.0195, 230.113 )
+position = Vector2( 56.6348, 174.907 )
 
 [node name="ui" type="Control" parent="."]
 anchor_right = 1.0

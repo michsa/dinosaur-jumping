@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 var MAX_RUN_SPEED = 50
+var MAX_JUMP_SPEED = 500
 var GRAVITY = 200
 var MAX_JUMPS = 1
 
@@ -18,7 +19,7 @@ func _physics_process(delta):
 	
 	var right = relation_to_player.x < 0
 	var left = relation_to_player.x > 0
-	var jumping = relation_to_player.y > 16 # abs(relation_to_player.x)
+	var jumping = relation_to_player.y > 16 || (relation_to_player.y > -32 && is_on_wall())
 	var jump = jumping && is_on_floor()
 	
 	if is_on_floor():
@@ -28,7 +29,7 @@ func _physics_process(delta):
 
 	if jump && jumps < MAX_JUMPS:
 		jumps += 1
-		jump_speed = 550
+		jump_speed = MAX_JUMP_SPEED
 	
 	if jumping:
 		jump_speed = lerp(jump_speed, 0, delta * (2 + jumps))
@@ -48,4 +49,4 @@ func _physics_process(delta):
 	for slide in get_slide_count():
 		var collision = get_slide_collision(slide)
 		if collision && !collision.collider.is_class('TileMap'): 
-			collision.collider.take_hit(collision, velocity)
+			collision.collider.take_hit(collision)
