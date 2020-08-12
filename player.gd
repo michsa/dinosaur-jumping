@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 var MAX_RUN_SPEED = 120
-var MAX_JUMP_SPEED = 400
+var MAX_JUMP_SPEED = 500
 var GRAVITY = 200
 var MAX_JUMPS = 2
 
@@ -10,11 +10,16 @@ var hp = 100
 var run_speed = 0
 var jump_speed = 0
 
+var impulse = Vector2()
 var velocity = Vector2()
 var jumps = 0
 
 func cursor_pos():
 	return position + $cursor.cast_to
+
+func take_hit(collision, v):
+	print(collision.travel)
+	impulse = v.normalized() * 300
 
 func _physics_process(delta):
 	$hp_bar.value = hp
@@ -39,7 +44,7 @@ func _physics_process(delta):
 
 	if jump && jumps < MAX_JUMPS:
 		jumps += 1
-		jump_speed = 500
+		jump_speed = MAX_JUMP_SPEED
 	
 	if jumping:
 		jump_speed = lerp(jump_speed, 0, delta * (2 + jumps))
@@ -57,4 +62,6 @@ func _physics_process(delta):
 	
 	velocity.x = run_speed
 	velocity.y = GRAVITY - jump_speed
-	velocity = move_and_slide(velocity, Vector2(0, -1))
+	velocity = move_and_slide(velocity + impulse, Vector2(0, -1))
+	impulse = impulse * 0.9
+	$velocity.cast_to = velocity / 4

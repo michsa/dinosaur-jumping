@@ -18,8 +18,8 @@ func _physics_process(delta):
 	
 	var right = relation_to_player.x < 0
 	var left = relation_to_player.x > 0
-	var jump = relation_to_player.y > abs(relation_to_player.x)
-	var jumping = jump
+	var jumping = relation_to_player.y > 16 # abs(relation_to_player.x)
+	var jump = jumping && is_on_floor()
 	
 	if is_on_floor():
 		jumps = 0
@@ -42,6 +42,10 @@ func _physics_process(delta):
 	else:
 		run_speed = lerp(run_speed, 0, delta * 8)
 	
-	velocity.y = GRAVITY - jump_speed
+	velocity.y = GRAVITY - jump_speed 
 	velocity.x = run_speed
 	velocity = move_and_slide(velocity, Vector2(0, -1))
+	for slide in get_slide_count():
+		var collision = get_slide_collision(slide)
+		if collision && !collision.collider.is_class('TileMap'): 
+			collision.collider.take_hit(collision, velocity)

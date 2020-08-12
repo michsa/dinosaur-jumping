@@ -45,3 +45,6 @@ texture_progress = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="velocity" type="RayCast2D" parent="."]
+collide_with_bodies = false
