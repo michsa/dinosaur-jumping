@@ -3,11 +3,12 @@
 [ext_resource path="res://enemy.gd" type="Script" id=1]
 [ext_resource path="res://assets/0x72_DungeonTilesetII_v1.3.png" type="Texture" id=2]
 
-
-[sub_resource type="RectangleShape2D" id=6]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 7 )
 
-[node name="enemy" type="KinematicBody2D"]
+[node name="enemy" type="KinematicBody2D" groups=[
+"enemy",
+]]
 position = Vector2( 24.4762, 116.843 )
 script = ExtResource( 1 )
 
@@ -21,7 +22,7 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 1 )
-shape = SubResource( 6 )
+shape = SubResource( 1 )
 __meta__ = {
 "_edit_lock_": true
 }
