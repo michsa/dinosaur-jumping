@@ -19,13 +19,13 @@ var hitstun = 0
 func cursor_pos():
 	return position + $cursor.cast_to
 
-func take_hit(x):
+func take_hit(x, damage):
 	if hitstun <= 0:
 		hitstun = HITSTUN_DURATION
 		$body.modulate = Color.orangered
 		knockback.x = x * 250
 		knockback.y = -400 if is_on_floor() else -100
-		hp -= 5
+		hp -= damage
 
 func _physics_process(delta):
 	# $hp_bar.value = hp

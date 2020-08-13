@@ -16,13 +16,13 @@ var velocity = Vector2()
 var jumps = 0
 var hitstun = 0
 
-func take_hit(x):
+func take_hit(x, damage):
 	if hitstun <= 0:
 		hitstun = HITSTUN_DURATION
 		$body.modulate = Color.orangered
 		knockback.x = x * 250
 		knockback.y = -400 if is_on_floor() else -100
-		hp -= 5
+		hp -= damage
 
 func relation_to_player():
 	return position - get_tree().root.get_node('tower/player').position
@@ -79,4 +79,4 @@ func _physics_process(delta):
 		if collision && !collision.collider.is_class('TileMap'):
 			# we still want a good bit of knockback even when it isn't moving very fast
 			var x = lerp(collision.travel.normalized().x, collision.travel.sign().x, 0.5)
-			collision.collider.take_hit(x)
+			collision.collider.take_hit(x, 10)
