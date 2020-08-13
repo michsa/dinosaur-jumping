@@ -23,7 +23,7 @@ func cursor_pos():
 func take_hit(collision):
 	if hitstun <= 0:
 		hitstun = HITSTUN_DURATION
-		modulate = Color.red
+		$body.modulate = Color.orangered
 		# we still want a good bit of knockback even when enemy isn't moving very fast
 		var x = lerp(collision.travel.normalized().x, collision.travel.sign().x, 0.5)
 		knockback.x = x * 250
@@ -55,6 +55,9 @@ func _physics_process(delta):
 		jumps += 1
 		jump_speed = MAX_JUMP_SPEED
 	
+	# holding jump slows the decay on jump_speed.
+	# this slows our fall and also lets us jump higher, since it takes longer
+	# for gravity to cancel out jump_speed and make us start falling
 	if jumping:
 		jump_speed = lerp(jump_speed, 0, delta * (2 + jumps))
 	else:
@@ -76,8 +79,10 @@ func _physics_process(delta):
 		hitstun -= delta
 		velocity += knockback
 		knockback *= hitstun / HITSTUN_DURATION
+		$body.visible = int(hitstun * 10) % 2
 	else:
-		modulate = Color.white
+		$body.modulate = Color.white
+		$body.visible = true
 	
 	velocity.y += GRAVITY
 	
