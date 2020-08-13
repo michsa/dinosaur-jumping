@@ -17,5 +17,5 @@ func done(anim):
 func _physics_process(delta):
 	var bodies = get_overlapping_bodies()
 	for body in bodies:
-		if body != get_tree().root.get_node('tower/player'):
-			print(body)
+		if body.is_in_group('enemy'):
+			body.take_hit($'..'.scale.x)

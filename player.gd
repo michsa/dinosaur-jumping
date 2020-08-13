@@ -19,12 +19,10 @@ var hitstun = 0
 func cursor_pos():
 	return position + $cursor.cast_to
 
-func take_hit(collision):
+func take_hit(x):
 	if hitstun <= 0:
 		hitstun = HITSTUN_DURATION
 		$body.modulate = Color.orangered
-		# we still want a good bit of knockback even when enemy isn't moving very fast
-		var x = lerp(collision.travel.normalized().x, collision.travel.sign().x, 0.5)
 		knockback.x = x * 250
 		knockback.y = -400 if is_on_floor() else -100
 		hp -= 5
