@@ -14,7 +14,6 @@ var jump_speed = 0
 var knockback = Vector2()
 var velocity = Vector2()
 var jumps = 0
-
 var hitstun = 0
 
 func cursor_pos():
@@ -31,7 +30,7 @@ func take_hit(collision):
 		hp -= 5
 
 func _physics_process(delta):
-	$hp_bar.value = hp
+	# $hp_bar.value = hp
 	
 	var right = Input.is_action_pressed('right')
 	var left = Input.is_action_pressed('left')

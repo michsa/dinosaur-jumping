@@ -4,12 +4,27 @@ var MAX_RUN_SPEED = 50
 var MAX_JUMP_SPEED = 500
 var GRAVITY = 200
 var MAX_JUMPS = 1
+var HITSTUN_DURATION = 0.5
+
+var hp = 100
 
 var run_speed = 0
 var jump_speed = 0
 
+var knockback = Vector2()
 var velocity = Vector2()
 var jumps = 0
+var hitstun = 0
+
+func take_hit(collision):
+	if hitstun <= 0:
+		hitstun = HITSTUN_DURATION
+		$body.modulate = Color.orangered
+		# we still want a good bit of knockback even when enemy isn't moving very fast
+		var x = lerp(collision.travel.normalized().x, collision.travel.sign().x, 0.5)
+		knockback.x = x * 250
+		knockback.y = -400 if is_on_floor() else -100
+		hp -= 5
 
 func relation_to_player():
 	return position - get_tree().root.get_node('tower/player').position
