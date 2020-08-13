@@ -4,7 +4,7 @@ var MAX_RUN_SPEED = 120
 var MAX_JUMP_SPEED = 500
 var GRAVITY = 200
 var MAX_JUMPS = 2
-var HITSTUN_DURATION = 1.0
+var HITSTUN_DURATION = 0.5
 
 var hp = 100
 
@@ -75,11 +75,11 @@ func _physics_process(delta):
 	if hitstun > 0:
 		hitstun -= delta
 		velocity += knockback
-		knockback = knockback * 0.9
-	if hitstun <= 0:
+		knockback *= hitstun / HITSTUN_DURATION
+	else:
 		modulate = Color.white
-		
-	velocity.y += GRAVITY
-	velocity = move_and_slide(velocity, Vector2.UP)
 	
+	velocity.y += GRAVITY
+	
+	velocity = move_and_slide(velocity, Vector2.UP)
 	$velocity.cast_to = velocity / 4
