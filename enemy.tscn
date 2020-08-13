@@ -13,18 +13,19 @@ extents = Vector2( 4, 7 )
 position = Vector2( 24.4762, 116.843 )
 script = ExtResource( 1 )
 
-[node name="sprite" type="Sprite" parent="."]
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 368, 80, 16, 16 )
+[node name="body" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 1 )
+shape = SubResource( 1 )
+one_way_collision = true
 __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="shape" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 1 )
-shape = SubResource( 1 )
-one_way_collision = true
+[node name="sprite" type="Sprite" parent="body"]
+position = Vector2( 0, -1 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 368, 80, 16, 16 )
 __meta__ = {
 "_edit_lock_": true
 }

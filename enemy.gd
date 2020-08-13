@@ -52,8 +52,10 @@ func _physics_process(delta):
 		jump_speed = lerp(jump_speed, 0, delta * (6 + jumps))
 	
 	if right:
+		$body.scale.x = 1
 		run_speed = lerp(run_speed, MAX_RUN_SPEED, delta * 6)
 	elif left:
+		$body.scale.x = -1
 		run_speed = lerp(run_speed, -MAX_RUN_SPEED, delta * 6)
 	else:
 		run_speed = lerp(run_speed, 0, delta * 8)
