@@ -23,11 +23,47 @@ func take_hit(x, damage):
 		knockback.x = x * 250
 		knockback.y = -400 if is_on_floor() else -100
 		hp -= damage
+		if hp <= 0: die()
 
 func relation_to_player():
 	return position - get_tree().root.get_node('tower/player').position
 
+func die():
+	$anim.play('die')
+	$anim.connect("animation_finished", self, '_on_anim_finished')
+
+func _on_anim_finished(anim):
+	if anim == 'die':
+		queue_free()
+
 func _physics_process(delta):
+	velocity = Vector2.ZERO
+	if hp > 0: move(delta)
+	
+	if hitstun > 0:
+		hitstun -= delta
+		velocity += knockback
+		knockback *= hitstun / HITSTUN_DURATION
+		$body.visible = int(hitstun * 10) % 2
+	else:
+		$body.modulate = Color.white
+		$body.visible = true
+	
+	velocity.y += GRAVITY
+	
+	velocity = move_and_slide(velocity, Vector2(0, -1))
+	
+	if hp > 0: attack()
+
+func attack():
+	for slide in get_slide_count():
+		var collision = get_slide_collision(slide)
+		if collision && !collision.collider.is_class('TileMap'):
+			# we still want a good bit of knockback even when it isn't moving very fast
+			var x = lerp(collision.travel.normalized().x, collision.travel.sign().x, 0.5)
+			collision.collider.take_hit(x, 10)
+
+func move(delta):
 	var relation_to_player = relation_to_player()
 	
 	var right = relation_to_player.x < 0
@@ -60,23 +96,3 @@ func _physics_process(delta):
 	
 	velocity.x = run_speed
 	velocity.y = -jump_speed
-	
-	if hitstun > 0:
-		hitstun -= delta
-		velocity += knockback
-		knockback *= hitstun / HITSTUN_DURATION
-		$body.visible = int(hitstun * 10) % 2
-	else:
-		$body.modulate = Color.white
-		$body.visible = true
-	
-	velocity.y += GRAVITY
-	
-	velocity = move_and_slide(velocity, Vector2(0, -1))
-	
-	for slide in get_slide_count():
-		var collision = get_slide_collision(slide)
-		if collision && !collision.collider.is_class('TileMap'):
-			# we still want a good bit of knockback even when it isn't moving very fast
-			var x = lerp(collision.travel.normalized().x, collision.travel.sign().x, 0.5)
-			collision.collider.take_hit(x, 10)
