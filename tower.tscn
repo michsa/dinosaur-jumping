@@ -120,11 +120,3 @@ position = Vector2( 153.825, 102.015 )
 
 [node name="enemy" parent="." instance=ExtResource( 6 )]
 position = Vector2( 56.6348, 174.907 )
-
-[node name="ui" type="Control" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="TextureProgress" type="TextureProgress" parent="ui"]
-margin_right = 40.0
-margin_bottom = 40.0

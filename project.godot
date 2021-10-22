@@ -15,7 +15,8 @@ _global_script_class_icons={
 
 [application]
 
-config/name="tower"
+config/name="dino jump"
+config/description="dinosaur jumping!"
 run/main_scene="res://tower.tscn"
 config/icon="res://assets/icon.png"
 
@@ -26,6 +27,10 @@ window/size/height=512
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
 window/stretch/shrink=2.0
+
+[gui]
+
+theme/custom_font="res://assets/menagerie.font"
 
 [input]
 
